@@ -1,0 +1,42 @@
+﻿# Database credentials (CRITICAL)
+DB_operations.php
+
+# Environment files
+.env
+*.env
+config.php
+
+# XAMPP specific
+*.log
+*.pid
+
+# Template leftovers (remove these from repo)
+pages/
+docs/
+media/
+*.gif
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build artifacts
+node_modules/
+package-lock.json
+*.map
+*.min.js
+
+# Backup files
+*.bak
+*.old
+*.orig
+
+# SQL dumps
+*.sql
+*.dump
