@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - School AIMS{% endblock %}
+{% block page_title %}Admin Overview{% endblock %}
+
+{% block content %}
+<!-- Top 4 Statistics Cards -->
+<div class="row">
+  <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+    <div class="card">
+      <div class="card-body p-3">
+        <div class="row">
+          <div class="col-8">
+            <div class="numbers">
+              <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Students</p>
+              <h5 class="font-weight-bolder mb-0">{{ total_students|default:0 }}</h5>
+            </div>
+          </div>
+          <div class="col-4 text-end">
+            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+              <i class="fas fa-user-graduate text-lg opacity-10" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+    <div class="card">
+      <div class="card-body p-3">
+        <div class="row">
+          <div class="col-8">
+            <div class="numbers">
+              <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Teachers</p>
+              <h5 class="font-weight-bolder mb-0">{{ total_teachers|default:0 }}</h5>
+            </div>
+          </div>
+          <div class="col-4 text-end">
+            <div class="icon icon-shape bg-gradient-info shadow text-center border-radius-md">
+              <i class="fas fa-chalkboard-teacher text-lg opacity-10" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+    <div class="card">
+      <div class="card-body p-3">
+        <div class="row">
+          <div class="col-8">
+            <div class="numbers">
+              <p class="text-sm mb-0 text-capitalize font-weight-bold">Active Classes</p>
+              <h5 class="font-weight-bolder mb-0">{{ total_classes|default:0 }}</h5>
+            </div>
+          </div>
+          <div class="col-4 text-end">
+            <div class="icon icon-shape bg-gradient-success shadow text-center border-radius-md">
+              <i class="fas fa-chalkboard text-lg opacity-10" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-sm-6">
+    <div class="card">
+      <div class="card-body p-3">
+        <div class="row">
+          <div class="col-8">
+            <div class="numbers">
+              <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Subjects</p>
+              <h5 class="font-weight-bolder mb-0">{{ total_subjects|default:0 }}</h5>
+            </div>
+          </div>
+          <div class="col-4 text-end">
+            <div class="icon icon-shape bg-gradient-warning shadow text-center border-radius-md">
+              <i class="fas fa-book text-lg opacity-10" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Schedule & Recent Attendance Row -->
+<div class="row mt-4">
+  <div class="col-lg-7 mb-lg-0 mb-4">
+    <div class="card">
+      <div class="card-header pb-0">
+        <h6>Today's Classes ({{ current_day }})</h6>
+      </div>
+      <div class="card-body px-0 pt-0 pb-2">
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Class / Subject</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Room</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Time</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mode</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for s in today_schedules %}
+              <tr>
+                <td>
+                  <div class="d-flex px-3 py-1">
+                    <div class="d-flex flex-column justify-content-center">
+                      <h6 class="mb-0 text-sm">{{ s.school_class.class_name }}</h6>
+                      <p class="text-xs text-secondary mb-0">Grade {{ s.school_class.grade_level }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p class="text-xs font-weight-bold mb-0">{{ s.classroom.building }}</p>
+                  <p class="text-xs text-secondary mb-0">Room {{ s.classroom.room_number }}</p>
+                </td>
+                <td class="align-middle text-center text-sm">
+                  <span class="badge badge-sm bg-gradient-info">{{ s.start_time|time:"H:i" }} - {{ s.end_time|time:"H:i" }}</span>
+                </td>
+                <td class="align-middle text-center">
+                  <span class="text-secondary text-xs font-weight-bold text-capitalize">{{ s.schedule_type }}</span>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="4" class="text-center py-4 text-xs text-secondary">No classes scheduled for today.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-lg-5">
+    <div class="card">
+      <div class="card-header pb-0">
+        <h6>Recent Attendance Records</h6>
+      </div>
+      <div class="card-body p-3">
+        <ul class="list-group">
+          {% for att in recent_attendance %}
+          <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+            <div class="d-flex align-items-center">
+              <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
+                <i class="fas fa-check-circle text-white opacity-10"></i>
+              </div>
+              <div class="d-flex flex-column">
+                <h6 class="mb-1 text-dark text-sm">{{ att.registration.student.full_name }}</h6>
+                <span class="text-xs">{{ att.registration.school_class.class_name }} ({{ att.attendance_date }})</span>
+              </div>
+            </div>
+            <div class="d-flex align-items-center text-gradient text-{% if att.status == 'present' %}success{% elif att.status == 'late' %}warning{% else %}danger{% endif %} text-uppercase text-xs font-weight-bold">
+              {{ att.get_status_display }}
+            </div>
+          </li>
+          {% empty %}
+          <li class="list-group-item border-0 text-center py-3 text-xs text-secondary">No recent attendance entries.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

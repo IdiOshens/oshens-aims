@@ -1,0 +1,84 @@
+{% load static %}
+<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
+  <div class="container-fluid py-1 px-3">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{% url 'dashboard:home' %}">Pages</a></li>
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">{% block breadcrumb %}Dashboard{% endblock %}</li>
+      </ol>
+      <h6 class="font-weight-bolder mb-0">{% block page_title %}Dashboard{% endblock %}</h6>
+    </nav>
+    <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+      <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+      </div>
+      <ul class="navbar-nav justify-content-end align-items-center">
+        {% if user.is_authenticated %}
+        <li class="nav-item d-flex align-items-center me-3">
+          <a href="{% url 'users:profile' %}" class="nav-link text-body font-weight-bold px-0 d-flex align-items-center">
+            <i class="fa fa-user me-sm-1"></i>
+            <span class="d-sm-inline d-none">{{ user.get_full_name|default:user.email }}</span>
+          </a>
+        </li>
+        <li class="nav-item d-xl-none ps-3 d-flex align-items-center me-2">
+          <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+            <div class="sidenav-toggler-inner">
+              <i class="sidenav-toggler-line"></i>
+              <i class="sidenav-toggler-line"></i>
+              <i class="sidenav-toggler-line"></i>
+            </div>
+          </a>
+        </li>
+        <li class="nav-item dropdown px-3 d-flex align-items-center">
+          <a href="javascript:;" class="nav-link text-body p-0 position-relative" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa fa-bell cursor-pointer"></i>
+            {% if notifications and notifications.count > 0 %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+              {{ notifications.count }}
+            </span>
+            {% endif %}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4 shadow" aria-labelledby="dropdownMenuButton">
+            {% for n in notifications %}
+            <li class="mb-2">
+              <a class="dropdown-item border-radius-md" href="javascript:;">
+                <div class="d-flex py-1">
+                  <div class="my-auto">
+                    <div class="avatar avatar-sm bg-gradient-info me-3 d-flex align-items-center justify-content-center text-white">
+                      <i class="fas fa-info text-xs"></i>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-column justify-content-center">
+                    <h6 class="text-sm font-weight-normal mb-1">
+                      <span class="font-weight-bold">{{ n.title }}</span>: {{ n.message }}
+                    </h6>
+                    <p class="text-xs text-secondary mb-0">
+                      <i class="fa fa-clock me-1"></i>
+                      {{ n.created_at|timesince }} ago
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </li>
+            {% empty %}
+            <li class="text-center py-2 text-xs text-secondary">No new notifications</li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="nav-item d-flex align-items-center">
+          <a href="{% url 'logout' %}" class="nav-link text-danger font-weight-bold px-0" title="Sign Out">
+            <i class="fa fa-sign-out me-sm-1"></i>
+            <span class="d-sm-inline d-none">Sign Out</span>
+          </a>
+        </li>
+        {% else %}
+        <li class="nav-item d-flex align-items-center">
+          <a href="{% url 'login' %}" class="nav-link text-body font-weight-bold px-0">
+            <i class="fa fa-user me-sm-1"></i>
+            <span class="d-sm-inline d-none">Sign In</span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

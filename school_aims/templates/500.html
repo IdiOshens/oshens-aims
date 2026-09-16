@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}500 - Server Error | School AIMS{% endblock %}
+
+{% block content %}
+<div class="row min-vh-75 justify-content-center align-items-center">
+  <div class="col-md-6 text-center">
+    <h1 class="display-1 font-weight-bolder text-gradient text-danger">500</h1>
+    <h3 class="font-weight-bold">Internal Server Error</h3>
+    <p class="text-secondary">An unexpected error occurred on the server. Our system administrators have been notified.</p>
+    <a href="{% url 'dashboard:home' %}" class="btn bg-gradient-dark mt-4">Return to Dashboard</a>
+  </div>
+</div>
+{% endblock %}

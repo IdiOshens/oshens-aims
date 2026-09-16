@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}404 - Page Not Found | School AIMS{% endblock %}
+
+{% block content %}
+<div class="row min-vh-75 justify-content-center align-items-center">
+  <div class="col-md-6 text-center">
+    <h1 class="display-1 font-weight-bolder text-gradient text-warning">404</h1>
+    <h3 class="font-weight-bold">Page Not Found</h3>
+    <p class="text-secondary">Sorry, the page or record you are looking for doesn't exist or has been moved.</p>
+    <a href="{% url 'dashboard:home' %}" class="btn bg-gradient-dark mt-4">Return to Dashboard</a>
+  </div>
+</div>
+{% endblock %}
