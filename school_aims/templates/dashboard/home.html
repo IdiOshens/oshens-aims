@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - School AIMS{% endblock %}
+{% block breadcrumb %}Home{% endblock %}
+{% block page_title %}Overview{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="card card-body blur shadow-blur overflow-hidden">
+      <div class="row gx-4">
+        <div class="col-auto">
+          <div class="avatar avatar-xl position-relative bg-gradient-primary rounded-circle text-white d-flex align-items-center justify-content-center">
+            <i class="fas fa-graduation-cap fa-2x"></i>
+          </div>
+        </div>
+        <div class="col-auto my-auto">
+          <div class="h-100">
+            <h5 class="mb-1">
+              {{ greeting }}
+            </h5>
+            <p class="mb-0 font-weight-bold text-sm text-capitalize">
+              Role: {{ role }} | {{ current_day }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

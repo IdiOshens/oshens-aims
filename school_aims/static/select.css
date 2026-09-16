@@ -1,0 +1,37 @@
+/* Style the dropdown container */
+.sel select {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #e0e0e0; /* Thin light gray border */
+  border-radius: 6px;
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+  color: #555; /* Soft gray text (not too dark) */
+  background-color: #fff;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Optional subtle shadow */
+}
+
+/* Light pink border when clicked/focused */
+.sel select:focus {
+  border-color: #de94da; /* Light pink */
+  box-shadow: 0 0 0 2px rgba(255, 182, 193, 0.2); /* Soft glow */
+}
+
+/* Style dropdown options (lighter text) */
+.sel select option {
+  color: #666; /* Softer than pure black (#000) */
+  padding: 8px 12px;
+  background-color: #fff;
+}
+
+/* Dropdown arrow styling */
+.sel select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23555' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+}

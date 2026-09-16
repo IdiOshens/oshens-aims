@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Timetable - School AIMS{% endblock %}
+{% block breadcrumb %}Timetable{% endblock %}
+{% block page_title %}Class Schedules{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="card mb-4">
+      <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+        <h6>Weekly Class Schedules</h6>
+        <a href="{% url 'classes:list' %}" class="btn btn-sm bg-gradient-secondary mb-0">
+          <i class="ni ni-bold-left me-1"></i> Back to Classes
+        </a>
+      </div>
+      <div class="card-body px-0 pt-0 pb-2">
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Class</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Day & Time</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Classroom</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Schedule Mode</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Teacher</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for s in schedules %}
+              <tr>
+                <td>
+                  <div class="d-flex px-3 py-1">
+                    <div class="icon icon-shape icon-sm me-3 bg-gradient-primary shadow text-center border-radius-md">
+                      <i class="ni ni-calendar-grid-58 text-white text-xs opacity-10"></i>
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                      <h6 class="mb-0 text-sm">{{ s.school_class.class_name }}</h6>
+                      <p class="text-xs text-secondary mb-0">Grade {{ s.school_class.grade_level }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="badge badge-sm bg-gradient-info">{{ s.day_of_week }}</span>
+                  <p class="text-xs font-weight-bold mb-0 mt-1">{{ s.start_time|time:"H:i" }} - {{ s.end_time|time:"H:i" }}</p>
+                </td>
+                <td>
+                  <p class="text-xs font-weight-bold mb-0">
+                    {% if s.classroom %}
+                      {{ s.classroom.building }} (Room {{ s.classroom.room_number }})
+                    {% else %}
+                      <span class="text-secondary">Virtual Room</span>
+                    {% endif %}
+                  </p>
+                </td>
+                <td class="align-middle text-center text-sm">
+                  <span class="badge badge-sm bg-gradient-light text-dark text-capitalize">{{ s.schedule_type }}</span>
+                </td>
+                <td>
+                  <p class="text-xs font-weight-bold mb-0">{{ s.school_class.teacher.full_name|default:"Unassigned" }}</p>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5" class="text-center py-4 text-xs text-secondary">No class schedules found.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

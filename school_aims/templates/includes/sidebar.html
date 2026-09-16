@@ -1,0 +1,198 @@
+{% load static %}
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3" id="sidenav-main">
+  <div class="sidenav-header">
+    <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+    <a class="navbar-brand m-0 d-flex align-items-center" href="{% url 'dashboard:home' %}">
+      <img src="{% static 'assets/img/logo-ct.png' %}" class="navbar-brand-img h-100" alt="main_logo">
+      <span class="ms-2 font-weight-bold">School AIMS</span>
+    </a>
+  </div>
+  <hr class="horizontal dark mt-0 mb-2">
+  
+  {% if user.is_authenticated %}
+  <div class="px-3 py-2 d-flex align-items-center mb-2">
+    <div class="avatar avatar-sm bg-gradient-primary rounded-circle text-white me-2 d-flex align-items-center justify-content-center">
+      <i class="fas fa-user text-xs"></i>
+    </div>
+    <div class="d-flex flex-column">
+      <span class="text-xs font-weight-bold text-dark">{{ user.get_full_name|default:user.email }}</span>
+      <span class="text-xxs text-secondary text-uppercase">{{ user.role|default:"User" }}</span>
+    </div>
+  </div>
+  <hr class="horizontal dark mt-0 mb-2">
+  {% endif %}
+
+  <div class="collapse navbar-collapse w-auto max-height-vh-100 h-100" id="sidenav-collapse-main">
+    <ul class="navbar-nav">
+      <!-- Common Dashboard link -->
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.app_name == 'dashboard' or request.path == '/' %}active{% endif %}" href="{% url 'dashboard:home' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-tv-2 text-primary"></i>
+          </div>
+          <span class="nav-link-text ms-1">Dashboard</span>
+        </a>
+      </li>
+
+      {% if user.role == 'admin' or user.is_staff or user.is_superuser %}
+      <!-- Admin Menu -->
+      <li class="nav-item mt-3">
+        <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Management</h6>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.app_name == 'registrations' and 'attendance' not in request.path %}active{% endif %}" href="{% url 'registrations:list' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-single-02 text-info"></i>
+          </div>
+          <span class="nav-link-text ms-1">Students</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.app_name == 'classes' and 'schedules' not in request.path %}active{% endif %}" href="{% url 'classes:list' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-hat-3 text-warning"></i>
+          </div>
+          <span class="nav-link-text ms-1">Classes</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.app_name == 'subjects' %}active{% endif %}" href="{% url 'subjects:list' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-books text-success"></i>
+          </div>
+          <span class="nav-link-text ms-1">Subjects</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.app_name == 'classrooms' %}active{% endif %}" href="{% url 'classrooms:list' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-building text-danger"></i>
+          </div>
+          <span class="nav-link-text ms-1">Classrooms</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if 'schedules' in request.path %}active{% endif %}" href="{% url 'classes:schedules' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-calendar-grid-58 text-primary"></i>
+          </div>
+          <span class="nav-link-text ms-1">Timetable</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if 'attendance' in request.path %}active{% endif %}" href="{% url 'registrations:attendance' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-check-bold text-success"></i>
+          </div>
+          <span class="nav-link-text ms-1">Attendance</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/" target="_blank">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-settings text-dark"></i>
+          </div>
+          <span class="nav-link-text ms-1">Django Admin</span>
+        </a>
+      </li>
+
+      {% elif user.role == 'teacher' %}
+      <!-- Teacher Menu -->
+      <li class="nav-item mt-3">
+        <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Academic</h6>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.app_name == 'classes' and 'schedules' not in request.path %}active{% endif %}" href="{% url 'classes:list' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-hat-3 text-warning"></i>
+          </div>
+          <span class="nav-link-text ms-1">My Classes</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.app_name == 'registrations' and 'attendance' not in request.path %}active{% endif %}" href="{% url 'registrations:list' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-single-02 text-info"></i>
+          </div>
+          <span class="nav-link-text ms-1">My Students</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if 'attendance' in request.path %}active{% endif %}" href="{% url 'registrations:attendance' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-check-bold text-success"></i>
+          </div>
+          <span class="nav-link-text ms-1">Attendance</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if 'schedules' in request.path %}active{% endif %}" href="{% url 'classes:schedules' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-calendar-grid-58 text-primary"></i>
+          </div>
+          <span class="nav-link-text ms-1">Timetable</span>
+        </a>
+      </li>
+
+      {% else %}
+      <!-- Student Menu -->
+      <li class="nav-item mt-3">
+        <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Academic</h6>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.app_name == 'classes' and 'schedules' not in request.path %}active{% endif %}" href="{% url 'classes:list' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-hat-3 text-warning"></i>
+          </div>
+          <span class="nav-link-text ms-1">My Classes</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.app_name == 'classrooms' %}active{% endif %}" href="{% url 'classrooms:list' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-laptop text-info"></i>
+          </div>
+          <span class="nav-link-text ms-1">Join Meeting</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if 'attendance' in request.path %}active{% endif %}" href="{% url 'registrations:attendance' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-check-bold text-success"></i>
+          </div>
+          <span class="nav-link-text ms-1">My Attendance</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if 'schedules' in request.path %}active{% endif %}" href="{% url 'classes:schedules' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-calendar-grid-58 text-primary"></i>
+          </div>
+          <span class="nav-link-text ms-1">Timetable</span>
+        </a>
+      </li>
+      {% endif %}
+
+      <!-- Account Settings / Profile -->
+      <li class="nav-item mt-3">
+        <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Account</h6>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.app_name == 'users' %}active{% endif %}" href="{% url 'users:profile' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-single-02 text-dark"></i>
+          </div>
+          <span class="nav-link-text ms-1">Profile</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-danger" href="{% url 'logout' %}">
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="ni ni-button-power text-danger"></i>
+          </div>
+          <span class="nav-link-text ms-1">Logout</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</aside>
